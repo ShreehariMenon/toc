@@ -1,13 +1,12 @@
 const compras_functions = (() => {
-    const _createAutomata = (response)=>{
-
+    const _createAutomata = (finalStates, initialStates, states, symbols, transitions)=>{
+        console.log(response)
         response.data.transitions.forEach(element => {
             
         });
 
 
-        content=""
-        
+        return;        
     }
 
 
@@ -227,6 +226,23 @@ const compras_functions = (() => {
         }
     };
 
+    const _crearAutomata = (target) => {
+        target.preventDefault();
+        form = document.getElementById("create_Form");
+        form.classList.add("was-validated");
+        if (form.checkValidity()) {
+            const regex = document.getElementById("crear-input-regex").value;
+            console.log(regex, " es la regex enviada"); // para verificar que se envio la regex correctamente
+            data={
+                regex: regex,
+            }
+            console.log(data);
+            automatas_fetch.post("https://automaton-web.herokuapp.com/regex/generate",data,_postExito,_logError);
+        }
+
+
+    }
+
     const _crearRegistro = (target) => {
         target.preventDefault();
         form = document.getElementById("create_Form");
@@ -298,15 +314,12 @@ const compras_functions = (() => {
     }
 
     const _postExito = (response) => {
-        const idProducto = response.data.idProducto;
-        const precioCompra = response.data.precioCompra;
-        const precioVenta = response.data.precioVenta;
-        const stock = response.data.stock;
-        const talla = response.data.talla;
-        const color = response.data.color;
-        const marca = response.data.marca;
-        const modelo = response.data.modelo;
-        _createRow(idProducto, precioCompra, precioVenta, stock, talla, color, marca, modelo);
+        const finalStates = response.data.final;
+        const initialStates = response.data.initial;
+        const states = response.data.states;
+        const symbols = response.data.symbols;
+        const transitions = response.data.transitions;
+        _createAutomata(finalStates, initialStates, states, symbols, transitions);
         console.log(response);
     };
 
@@ -319,6 +332,7 @@ const compras_functions = (() => {
         reiniciaCampos: _reiniciaCampos,
         validatePrice: _validatePrice,
         crearRegistro: _crearRegistro,
+        crearAutomata: _crearAutomata,
         loadTable: _loadTable,
         filtrarTabla: _filtrarTabla,
         postExito: _postExito,

@@ -1,4 +1,4 @@
-const compras_fetch = (() => {
+const automatas_fetch = (() => {
 
     const _get = (url, fnExito, fnFallo) => {
         fetch(url).
@@ -18,14 +18,14 @@ const compras_fetch = (() => {
         ).catch(compras_functions.logError);
     };
 
-    const _post = (url, data) => {
+    const _post = (url, data,funcExito,funcError) => {
         fetch(url, {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {'Content-Type': 'application/json'}
         }).
         then((resp) => resp.json()).
-        then(compras_functions.postExito).catch(compras_functions.logError);
+        then(funcExito).catch(compras_functions.funcError);
     };
 
     const _delete = (url) => {
