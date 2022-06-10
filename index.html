@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="es-419">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/png" href="ico.png">
+    <title>XELF: Autómatas</title>
+    <!-- Bootstrap ICONS, CSS, JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+    <!-- jQuery -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <link rel="stylesheet" href="/css/compras.css">
+</head>
+
+<body class="bg-custom">
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-md navbar-dark nav-custom">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler"
+                aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarToggler">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="">Generar autómata</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="https://compras-develop.herokuapp.com/api/compras/" target="_blank">Base de datos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled">Documentación</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- PANEL DE CONTROL -->
+        <div class="row mx-3 py-3">
+            <div class="col-md-4 col-12 my-1">
+                <div class="card d-flex text-center fg-custom align-items-center justify-content-center pb-4">
+                    <div class="card-body">Generar autómata</div>
+                    <div class="d-flex align-items-center justify-content-center">
+                        <button type="button" class="btn btn-p-azul" id="btn-regex" data-bs-toggle="modal"
+                            data-bs-target="#modal-crear-regex">con RegEx</button>
+                            <button type="button" class="ms-3 btn btn-p-azul" id="btn-data" data-bs-toggle="modal"
+                            data-bs-target="#modal-crear-data">con Datos</button>
+                    </div>
+                </div>
+            </div>
+                <div class="col-md-4 col-6 my-1">
+                    <div class="card text-center fg-custom pb-4">
+                        <div class="card-body"> 
+                            <d class="d-none d-sm-block">Número de estados</d>
+                            <d class="d-block d-sm-none">ESTADOS</d>
+                        </div>
+                        <icon class="fs-3 d-inline"><i class="px-1 bi bi-box-seam round-yellow"></i>
+                            <p class="fs-3 d-inline color-amarillo" id="contadorModelos">0</p>
+                        </icon>
+                    </div>
+                </div>
+                <div class="col-md-4 col-6 my-1">
+                    <div class="card text-center fg-custom pb-4">
+                        <div class="card-body"> 
+                            <d class="d-none d-sm-block">Número de transiciones</d>
+                            <d class="d-block d-sm-none">TRANSICIONES</d>
+                        </div>
+                        <icon class="fs-3 d-inline"><i class="px-1 bi bi-arrow-down-square round-green"></i>
+                            <p class="fs-3 d-inline color-verde" id="contadorModelos">0</p>
+                        </icon>
+                    </div>
+                </div>           
+        </div>
+    <!-- PANEL CENTRAL -->
+    <div class="container align-items-center text-center justify-content-center fg-custom" id="automata_body">
+
+        <p class="small">
+            *Esta es una imagen estática de prueba*
+        </p> <br>
+        <img loading="lazy" class="p5" src="https://quickchart.io/graphviz?graph=digraph{main->parse->execute;main->init;main->cleanup;execute->make_string;execute->printf;init->make_string;main->printf;execute->compare;}">
+        
+    </div>
+    <!-- FORM RegEx -->
+    <div class="modal fade" id="modal-crear-regex" tabindex="-1" role="dialog"
+        aria-labelledby="modal-crear-regexLabel" aria-hidden="true" data-bs-backdrop="static"
+        data-bs-keyboard="false" aria-labelledby="staticBackdropLabel">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content fg-custom">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modal-crear-regexLabel">Generar Autómata</h3>
+                    <button type="button" class="btn btn-s-close" data-bs-dismiss="modal" aria-label="close">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+                <form id="create_Form" class="needs-validation" novalidate>
+                    <div class="modal-body">
+                        <div class="mb-2 position-relative">
+                            <label for="crear-input-regex">Expresión Regular</label>
+                            <input type="text" class="form-control input-custom" id="crear-input-regex"
+                                placeholder="Introduce una expresión regular sin comillas" required>
+                            <div class="invalid-tooltip" id="input-regex-invalid">
+                                La expresión regular no es válida, consulta la documentación.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" id="crear-ok" class="btn btn-s-verde">Generar</button>
+                        <button type="button" id="crear-cancel" class="btn btn-s-amarillo"
+                            data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- FORM FROM DATA -->
+    <div class="modal fade" id="modal-crear-data" tabindex="-1" role="dialog"
+        aria-labelledby="modal-crear-dataLabel" aria-hidden="true" data-bs-backdrop="static"
+        data-bs-keyboard="false" aria-labelledby="staticBackdropLabel">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content fg-custom">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modal-crear-dataLabel">Registrar nuevo producto</h3>
+                    <button type="button" class="btn btn-s-close" data-bs-dismiss="modal" aria-label="close">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+                <form id="create_Form" class="needs-validation" novalidate>
+                    <div class="modal-body">
+                        <div class="mb-2 position-relative">
+                            <label for="create_input_pcompra">Campo 1</label>
+                            <input type="number" class="form-control input-custom disabled" id="create_input_pcompra"
+                                placeholder="Campo 1 placeholder" min="0" max="1000000" step="0.01"
+                                required>
+                            <div class="invalid-tooltip" id="pcompra_invalid">
+                                Introduce un valor (positivo, con o sin decimales).
+                            </div>
+                        </div>
+                        <div class="mb-2 position-relative">
+                            <label for="create_input_pventa">Campo 2</label>
+                            <input type="number" class="form-control input-custom disabled" id="create_input_pventa" min="0"
+                            max="1000000" step="0.01" placeholder="Campo 2 placeholder" required>
+                            <div class="invalid-tooltip"  id="pventa_invalid">
+                                Introduce un valor (positivo, con o sin decimales).
+                            </div>
+                        </div>
+                        <div class="mb-2 position-relative">
+                            <label for="create_input_stock">Campo 3</label>
+                            <input type="number" class="form-control input-custom disabled" id="create_input_stock" min="0"
+                                step="1" max="999999" placeholder="Campo 3 placeholder" required>
+                            <div class="invalid-tooltip"  id="stock_invalid">
+                                Debe ser un número entero mayor o igual a cero.
+                            </div>
+                        </div>
+                        <div class="mb-2 position-relative">
+                            <label for="create_input_talla">Campo 4</label>
+                            <input type="number" class="form-control input-custom disabled" id="create_input_talla"
+                                placeholder="Campo 4 placeholder" min="1" max="100" step="0.5"
+                                required>
+                            <div class="invalid-tooltip"  id="talla_invalid">
+                                Introduce un valor (positivo, con o sin decimales).
+                            </div>
+                        </div>
+                        <div class="mb-2 position-relative">
+                            <label for="create_input_color">Campo 5</label>
+                            <input type="text" class="form-control input-custom disabled" id="create_input_color"
+                                placeholder="Campo 5 placeholder" maxlength="20"
+                                required>
+                            <div class="invalid-tooltip">
+                                Color o colores del producto.
+                            </div>
+                        </div>
+                        <div class="mb-2 position-relative">
+                            <label for="create_input_marca">Campo 6</label>
+                            <input type="text" class="form-control input-custom disabled" id="create_input_marca"
+                                placeholder="Campo 6 placeholder" maxlength="20"
+                                required>
+                            <div class="invalid-tooltip">
+                                Marca del producto.
+                            </div>
+                        </div>
+                        <div class="position-relative">
+                            <label for="create_input_modelo">Campo 7</label>
+                            <input type="text" class="form-control input-custom disabled" id="create_input_modelo"
+                                placeholder="Campo 7 placeholder" maxlength="20"
+                                required>
+                            <div class="invalid-tooltip">
+                                Modelo del producto.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <small class="text-warning d-none" id="advertencia">Precaución: El precio de venta es menor al precio de compra.</small>
+                        <button type="submit" id="create_ok" class="btn btn-s-verde">Guardar</button>
+                        <button type="button" id="create_cancel" class="btn btn-s-amarillo"
+                            data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- FORM DELETE -->
+    <div class="modal fade" id="modalConfirmarEliminar" tabindex="-1" role="dialog"
+        aria-labelledby="modalConfirmarEliminarLabel" aria-hidden="true" data-bs-keyboard="false"
+        aria-labelledby="staticBackdropLabel">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content fg-custom">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modalConfirmarEliminarLabel">Se requiere confirmación</h3>
+                    <button type="button" class="btn btn-s-close" data-bs-dismiss="modal" aria-label="close">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+                <form id="delete_Form">
+                    <div class="modal-body">
+                        <p class="lead">
+                            ¿Desea eliminar el producto?
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-s-rojo" id="delete_ok">Eliminar</button>
+                        <button type="button" class="btn btn-s-dark" id="delete_cancel"
+                            data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- FORM EDIT -->
+    <div class="modal fade" id="modalEditarProducto" tabindex="-1" role="dialog"
+        aria-labelledby="modalEditarProductoLabel" aria-hidden="true" data-bs-keyboard="false"
+        aria-labelledby="staticBackdropLabel">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content fg-custom">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modalEditarProductoLabel">Editar producto</h3>
+                    <button type="button" class="btn btn-s-close" data-bs-dismiss="modal" aria-label="close">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+                <form id="edit_Form" class="was-validated">
+                    <div class="modal-body">
+
+                        <small class="text-muted">No se permite editar el ID</small>
+
+                        <div class="form-floating mb-2">
+                            <input type="number" class="form-control input-custom" id="edit_input_id" disabled="true"
+                                required>
+                            <label for="nombreProducto">ID del producto</label>
+                        </div>
+                        <div class="mb-2 position-relative">
+                            <label for="edit_input_pcompra">Precio de compra</label>
+                            <input type="number" class="form-control input-custom" id="edit_input_pcompra"
+                                placeholder="Introduce el precio de compra" min="0" max="1000000" step="0.01"
+                                required>
+                            <div class="invalid-tooltip" id="pcompra_invalid">
+                                Introduce un valor (positivo, con o sin decimales).
+                            </div>
+                        </div>
+                        <div class="mb-2 position-relative">
+                            <label for="edit_input_pventa">Precio de venta</label>
+                            <input type="number" class="form-control input-custom" id="edit_input_pventa" min="0"
+                            max="1000000" step="0.01" placeholder="Introduce el precio de venta" required>
+                            <div class="invalid-tooltip"  id="pventa_invalid">
+                                Introduce un valor (positivo, con o sin decimales).
+                            </div>
+                        </div>
+                        <div class="mb-2 position-relative">
+                            <label for="edit_input_stock">Stock</label>
+                            <input type="number" class="form-control input-custom" id="edit_input_stock" min="0"
+                                step="1" max="999999" placeholder="Introduce el stock del producto" required>
+                            <div class="invalid-tooltip"  id="stock_invalid">
+                                Debe ser un número entero mayor o igual a cero.
+                            </div>
+                        </div>
+                        <div class="mb-2 position-relative">
+                            <label for="edit_input_talla">Talla</label>
+                            <input type="number" class="form-control input-custom" id="edit_input_talla"
+                                placeholder="Escribe el monto total de la compra" min="1" max="100" step="0.5"
+                                required>
+                            <div class="invalid-tooltip"  id="talla_invalid">
+                                Introduce un valor (positivo, con o sin decimales).
+                            </div>
+                        </div>
+                        <div class="mb-2 position-relative">
+                            <label for="edit_input_color">Color</label>
+                            <input type="text" class="form-control input-custom" id="edit_input_color"
+                                placeholder="Escribe el color o colores del producto" maxlength="20"
+                                required>
+                            <div class="invalid-tooltip">
+                                Color o colores del producto.
+                            </div>
+                        </div>
+                        <div class="mb-2 position-relative">
+                            <label for="edit_input_marca">Marca</label>
+                            <input type="text" class="form-control input-custom" id="edit_input_marca"
+                                placeholder="Escribe la marca del producto" maxlength="20"
+                                required>
+                            <div class="invalid-tooltip">
+                                Marca del producto.
+                            </div>
+                        </div>
+                        <div class="position-relative">
+                            <label for="edit_input_modelo">Modelo</label>
+                            <input type="text" class="form-control input-custom" id="edit_input_modelo"
+                                placeholder="Escribe el modelo del producto" maxlength="20"
+                                required>
+                            <div class="invalid-tooltip">
+                                Modelo del producto.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="edit_ok" class="btn btn-s-verde">Guardar cambios</button>
+                        <button type="button" id="edit_cancel" class="btn btn-s-amarillo"
+                            data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Scripts -->
+    <script src="js/automatas_fetch.js" type="text/javascript"></script>
+    <script src="js/automatas_functions.js" type="text/javascript"></script>
+    <script src="js/automatas_dom.js" type="text/javascript"></script>
+</body>
+
+</html>
