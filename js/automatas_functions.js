@@ -5,7 +5,7 @@ const compras_functions = (() => {
             
         });
 
-
+        //force update
         return;        
     }
 
