@@ -16,15 +16,15 @@
         crossorigin="anonymous"></script>
     <!-- jQuery -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-    <link rel="stylesheet" href="css/elfx.css">
-        <!-- Favicon -->
-        <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
-        <link rel="manifest" href="images/site.webmanifest">
-        <link rel="mask-icon" href="images/safari-pinned-tab.svg" color="#5bbad5">
-        <meta name="msapplication-TileColor" content="#da532c">
-        <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="css/xelf.css">
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <link rel="manifest" href="images/site.webmanifest">
+    <link rel="mask-icon" href="images/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
 </head>
 
 <body class="bg-custom">
@@ -91,7 +91,7 @@
     </div>
 
     <!-- PANEL AUTÓMATA -->
-    <div class="container align-items-center text-center justify-content-center fg-custom py-3" id="automata_body">
+     <div class="container align-items-center text-center justify-content-center fg-custom py-3" id="automata_body">
         <p class="fs-4 text-white d-none" id="regex-show">REGEX: </p>
         <div id="automatonGraph" class="svg-container">
             <p class="text-muted p-5">
@@ -107,12 +107,12 @@
             </p>
 
         </div>
-
+        <button class="btn btn-s-close d-none mt-5" type="button" id="downloadPNG">Descargar imagen</button>
     </div>
     <!-- PANEL TABLA -->
     <div class="container align-items-center text-center justify-content-center fg-custom my-4 py-3">
         <div id="automatonTable">
-            
+
         </div>
 
     </div>
@@ -242,6 +242,7 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/viz.js"></script>
     <script src="js/noam.js"></script>
-    <script src="js/fsm_simulator.js"></script>
+    <script src="js/xelf_funciones.js"></script>
 </body>
+
 </html>

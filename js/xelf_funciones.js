@@ -1,3 +1,28 @@
+$('#downloadPNG').on('click', function () {
+    svg = $("#automatonGraph svg")[0];
+    downloadSvgAsPng(svg, "Automata.png");
+});
+function downloadSvgAsPng(svgElement, name) {
+    var svg = new XMLSerializer().serializeToString(svgElement);
+    var canvas = document.createElement("canvas");
+    canvas.width = svgElement.width.baseVal.value;
+    canvas.height = svgElement.height.baseVal.value;
+    var ctx = canvas.getContext("2d");
+    var data = "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svg)));
+    var img = new Image();
+    img.src = data;
+    img.onload = function () {
+        ctx.drawImage(img, 0, 0);
+        var canvasdata = canvas.toDataURL("image/png");
+        var a = document.createElement("a");
+        a.download = name;
+        a.href = canvasdata;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+}
+
 function colorStates(states, cssClass) {
     if (states === undefined || states === null) {
         return;
@@ -59,13 +84,15 @@ function drawGraph() {
     $("#automatonGraph").html(gvizXml);
     reorderCirclesInAcceptingStates(automaton.acceptingStates);
     $("#automatonGraph svg").width($("#automatonGraph").width());
-    $("#automatonGraph svg").attr("class","mw-100");
+    $("#automatonGraph svg").attr("class", "mw-100");
     //show number of states
     $("#display-states").text(automaton.states.length);
     //show number of transitions
     $("#display-accept").text(automaton.acceptingStates.length);
     //show regex
     $("#regex-show").removeClass("d-none");
+    //show downloadPNG
+    $("#downloadPNG").removeClass("d-none");
     //print table in automatonTable div
     $("#automatonTable").html(noam.fsm.printHtmlTable(automaton));
     $("#regex-show").text("Expresión regular" + ": " + $("#regex").val());
