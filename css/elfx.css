@@ -1,3 +1,131 @@
+.graph {
+    min-height: 150px;
+}
+
+input,
+textarea {
+    font-family: monospace;
+}
+
+.header {
+    text-align: center;
+    color: black;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    font-size: 4em;
+    letter-spacing: -2px;
+    margin-bottom: 20px;
+}
+
+.header p {
+    display: block;
+    font-size: 2em;
+    line-height: 1em;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    font-style: italic;
+}
+
+hr {
+    height: 2px;
+    border-color: grey;
+}
+
+.content {
+    background-color: white;
+    min-height: 500px;
+    border: solid rgb(229, 229, 229) 2px;
+    padding-bottom: 20px;
+    padding-top: 20px;
+}
+
+.footer {
+    margin-top: 30px;
+    text-align: center;
+    color: grey;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.column {
+    min-height: 190px;
+}
+
+body {
+    background-color: rgb(245, 245, 245);
+
+}
+
+h3 {
+    text-rendering: auto;
+}
+
+/*
+.currentState {
+    fill: rgba(255, 0, 38, 0.11);
+    background-color: rgba(255, 0, 38, 0.151);
+    stroke-width: 2;
+}
+
+.nextState {
+    fill: rgba(0, 255, 0, 0.37);
+}
+
+.previousState {
+    fill: lightblue;
+}
+
+.activeTransition {
+    stroke: blue;
+    stroke-width: 2;
+}
+
+.inactiveState {
+    fill: white;
+}
+
+.nextSymbol {
+    background-color: lightgreen;
+    font-weight:bold;
+}
+*/
+#fsm {
+    height: 600px;
+}
+
+
+svg g polygon {
+    fill: #283144;
+    stroke: transparent;
+    stroke-width: 1px;
+}
+
+g g polygon {
+    fill: #283144;
+    stroke: white;
+    stroke-width: 1;
+}
+
+g text {
+    fill: white;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+ellipse {
+    stroke: white;
+    stroke-width: 1;
+}
+
+path {
+    stroke: white;
+    stroke-width: 1;
+}
+
 .color-amarillo{
     color: #fdac41;
     text-shadow: 0 0 .25rem #fdac41;
