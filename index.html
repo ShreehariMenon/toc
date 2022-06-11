@@ -91,13 +91,13 @@
     </div>
 
     <!-- PANEL AUTÓMATA -->
-     <div class="container align-items-center text-center justify-content-center fg-custom py-3" id="automata_body">
+    <div class="container align-items-center text-center justify-content-center fg-custom py-3" id="automata_body">
         <p class="fs-4 text-white d-none" id="regex-show">REGEX: </p>
         <div id="automatonGraph" class="svg-container">
             <p class="text-muted p-5">
                 Haz click en alguno de los botones de arriba para generar un autómata. <br>
-                Se requiere una expresión regular váilda[1], los caracteres que se pueden usar son:
-                $, *, + y paréntesis ().
+                Se requiere una expresión regular váilda[1]. En esta versión, el operador de decisión es "+" y el
+                operador de Kleene es "*".
                 <br><br>
                 <small class="fst-italic d-inline">[1]Las expresiones regulares utilizadas en este generador pueden
                     variar respecto a otros, en este se utiliza la sintaxis de expresiones regulares establecida
@@ -234,6 +234,10 @@
                     </div>
                 </form>
             </div>
+        </div>
+    </div>
+    <div class="container-fluid d-none" id="printingZone">
+        <div id="automatonPrint">
         </div>
     </div>
     <!-- FOOTER -->

@@ -1,5 +1,5 @@
 $('#downloadPNG').on('click', function () {
-    svg = $("#automatonGraph svg")[0];
+    svg = $("#automatonPrint svg")[0];
     downloadSvgAsPng(svg, "Automata.png");
 });
 function downloadSvgAsPng(svgElement, name) {
@@ -82,9 +82,14 @@ function drawGraph() {
     var dotString = noam.fsm.printDotFormat(automaton);
     var gvizXml = Viz(dotString, "svg");
     $("#automatonGraph").html(gvizXml);
+    $("#automatonPrint").html(gvizXml);
     reorderCirclesInAcceptingStates(automaton.acceptingStates);
     $("#automatonGraph svg").width($("#automatonGraph").width());
-    $("#automatonGraph svg").attr("class", "mw-100");
+    $("#automatonGraph svg").width("100%");
+    $("#automatonGraph svg").height("100%");
+    //print
+    $("#automatonPrint svg").attr("width",1920);
+    $("#automatonPrint svg").attr("height",1080);
     //show number of states
     $("#display-states").text(automaton.states.length);
     //show number of transitions
@@ -96,7 +101,6 @@ function drawGraph() {
     //print table in automatonTable div
     $("#automatonTable").html(noam.fsm.printHtmlTable(automaton));
     $("#regex-show").text("Expresión regular" + ": " + $("#regex").val());
-    console.log(automaton.states.length);
 }
 
 function colorize() {
@@ -308,10 +312,10 @@ $("#createAutomaton").click(function () {
         automaton = noam.fsm.convertNfaToDfa(automaton);
         automaton = noam.fsm.minimize(automaton);
         automaton = noam.fsm.convertStatesToNumbers(automaton);
-        console.log(noam.fsm.convertStatesToNumbers(automaton));
+        // console.log(noam.fsm.convertStatesToNumbers(automaton));
 
-        console.log(automaton);
-        console.log(noam.fsm.serializeFsmToString(automaton));
+        // console.log(automaton);
+        // console.log(noam.fsm.serializeFsmToString(automaton));
         //fade modal
         $("#modal-crear-regex").modal("hide");
     } else {
