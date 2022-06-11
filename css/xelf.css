@@ -162,18 +162,28 @@ path {
     background-color: #2b4c4f;
     color: #39da8a;
     border-radius: 30px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .round-blue{
     background-color: #30405f;
     color: #5a8dee;
     border-radius: 30px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .round-yellow{
     background-color: #4a4544;
     color: #fdac41;
     border-radius: 30px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
 }
 
 .btn-s-close:hover{
