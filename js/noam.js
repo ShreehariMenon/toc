@@ -1568,7 +1568,7 @@
     for (i=0; i<tableRows.length; i++) {
       htmlString.push("  <tr>");
       for (j=0; j<tableRows[i].length-1; j++) {
-        htmlString.push("    <td>" + tableRows[i][j].text + "</td>");
+        htmlString.push("    <td>E" + tableRows[i][j].text + "</td>");
       }
       //when last column value is = 0, print No, if it is = 1, print Sí
     htmlString.push("    <td>" + (((tableRows[i][tableRows[i].length-1].text).toString() == '1') ? "Sí" : "No"  )+ "</td>");

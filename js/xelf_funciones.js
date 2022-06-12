@@ -2,6 +2,7 @@ $('#downloadPNG').on('click', function () {
     svg = $("#automatonPrint svg")[0];
     downloadSvgAsPng(svg, "Automata.png");
 });
+
 function downloadSvgAsPng(svgElement, name) {
     var svg = new XMLSerializer().serializeToString(svgElement);
     var canvas = document.createElement("canvas");
@@ -23,73 +24,18 @@ function downloadSvgAsPng(svgElement, name) {
     }
 }
 
-function colorStates(states, cssClass) {
-    if (states === undefined || states === null) {
-        return;
-    }
-
-    states = getElementsOfStates(states);
-
-    for (var i = 0; i < states.length; i++) {
-        states[i].children("ellipse").each(function () {
-            $(this).attr("class", cssClass);
-        });
-    }
-}
-
-function colorDiv(divId, intervals, cssClass) {
-    var regex = $("#" + divId).html();
-
-    var start = 0;
-    var out = "";
-
-    for (var i = 0; i < intervals.length; i++) {
-        out += regex.slice(start, intervals[i][0]);
-        out += '<font class="' + cssClass + '">' + regex.slice(intervals[i][0], intervals[i][1]) + '</font>';
-        start = intervals[i][1];
-    }
-
-    out += regex.slice(start);
-
-    $("#" + divId).html(out);
-}
-
-function getElementsOfStates(states) {
-    var retVal = [];
-
-    for (var i = 0; i < states.length; i++) {
-        $("title:contains('" + states[i].toString() + "')").each(function (index, element) {
-            if ($(this).text() === states[i].toString()) {
-                retVal.push($(this).parent());
-            }
-        });
-    }
-
-    return retVal;
-}
-
-function reorderCirclesInAcceptingStates(states) {
-    var stateElements = getElementsOfStates(states);
-
-    for (var i = 0; i < stateElements.length; i++) {
-        var e1 = $(stateElements[i].children("ellipse")[0]);
-        var e2 = $(stateElements[i].children("ellipse")[1]);
-        e1.insertAfter(e2);
-    }
-}
-
 function drawGraph() {
     var dotString = noam.fsm.printDotFormat(automaton);
     var gvizXml = Viz(dotString, "svg");
     $("#automatonGraph").html(gvizXml);
     $("#automatonPrint").html(gvizXml);
-    reorderCirclesInAcceptingStates(automaton.acceptingStates);
+    //reorderCirclesInAcceptingStates(automaton.acceptingStates);
     $("#automatonGraph svg").width($("#automatonGraph").width());
-    $("#automatonGraph svg").width("100%");
-    $("#automatonGraph svg").height("100%");
+    $("#automatonGraph svg").width("75%");
+    $("#automatonGraph svg").height("50%");
     //print
-    $("#automatonPrint svg").attr("width",1920);
-    $("#automatonPrint svg").attr("height",1080);
+    $("#automatonPrint svg").attr("width", 1920);
+    $("#automatonPrint svg").attr("height", 1080);
     //show number of states
     $("#display-states").text(automaton.states.length);
     //show number of transitions
@@ -101,175 +47,34 @@ function drawGraph() {
     //print table in automatonTable div
     $("#automatonTable").html(noam.fsm.printHtmlTable(automaton));
     $("#regex-show").text("Expresión regular" + ": " + $("#regex").val());
+
+    //get list of all <text> elements inside <g> elements with id starting with "node"
+    var labels = $("#automatonGraph svg g[id^='node'] text");
+    //for each label, get replace the inner text with the state name
+    labels.each(function () {
+        //get the inner text of the label
+        var text = $(this).text();
+        //concatenate E+stateName
+        var newText = "E" + text;
+        //replace the inner text with the new text
+        $(this).text(newText);
+    }
+    );
+
 }
-
-function colorize() {
-    colorStates(automaton.states, "inactiveStates");
-    colorStates(previousStates, "previousState");
-    colorStates(nextStates, "nextState");
-    colorStates(currentStates, "currentState");
-}
-
-$("#generateRandomString").click(function () {
-    if ($("#startStop").text() === "Stop") {
-        $("#startStop").click();
-    }
-
-    $("#inputString").val(Math.random() >= 0.5 ?
-        noam.fsm.randomStringInLanguage(automaton).join("") :
-        noam.fsm.randomStringNotInLanguage(automaton).join(""));
-    onInputStringChange();
-});
-
-$("#generateRandomAcceptableString").click(function () {
-    if ($("#startStop").text() === "Stop") {
-        $("#startStop").click();
-    }
-
-    var s = noam.fsm.randomStringInLanguage(automaton).join("");
-    $("#inputString").val(s);
-    onInputStringChange();
-});
-
-$("#generateRandomUnacceptableString").click(function () {
-    if ($("#startStop").text() === "Stop") {
-        $("#startStop").click();
-    }
-
-    var s = noam.fsm.randomStringNotInLanguage(automaton).join("");
-    $("#inputString").val(s);
-    onInputStringChange();
-});
-
-$("#startStop").click(function () {
-    if ($("#startStop").text() === "Start") {
-        var r = $("#inputString").val();
-        $("#inputString").parent().html('<div id="inputString" type="text" class="input-div input-block-level monospaceRegex" placeholder="See if this fits"><br></div>');
-        $("#inputString").html(r === "" ? '<br>' : r);
-        resetAutomaton();
-        $("#inputString").removeAttr("contenteditable");
-        $("#inputFirst").attr("disabled", false);
-        $("#inputNext").attr("disabled", false);
-        $("#inputPrevious").attr("disabled", false);
-        $("#inputLast").attr("disabled", false);
-        $("#startStop").text("Stop");
-    } else {
-        var r = $("#inputString").text();
-        $("#inputString").parent().html('<input id="inputString" type="text" class="input-block-level monospaceRegex" placeholder="See if this fits">');
-        $("#inputString").keyup(onInputStringChange);
-        $("#inputString").change(onInputStringChange);
-        $("#inputString").val(r);
-        $("#inputString").attr("contenteditable", "");
-        $("#inputFirst").attr("disabled", true);
-        $("#inputNext").attr("disabled", true);
-        $("#inputPrevious").attr("disabled", true);
-        $("#inputLast").attr("disabled", true);
-        $("#startStop").text("Start");
-        $("#inputString").html(($("#inputString").text()));
-        $("#inputString").focus();
-    }
-});
-
-function onInputStringChange() {
-    var chars = $("#inputString").val().split("");
-    var isValidInputString = -1;
-    for (var i = 0; i < chars.length; i++) {
-        if (!noam.util.contains(automaton.alphabet, chars[i])) {
-            isValidInputString = i;
-            break;
-        }
-    }
-
-    if (isValidInputString === -1) {
-        $("#startStop").attr("disabled", false);
-        $("#inputString").parent().addClass("success");
-        $("#inputString").parent().removeClass("error");
-        $("#inputError").hide();
-    } else {
-        $("#startStop").attr("disabled", true);
-        $("#inputString").parent().removeClass("success");
-        $("#inputString").parent().addClass("error");
-        $("#inputError").show();
-        $("#inputError").text("Error: input character at position " + i + " is not in FSM alphabet.");
-    }
-}
-
-function colorNextSymbol() {
-    $("#inputString").html(inputString);
-
-    if ($("#inputString").html() === "") {
-        $("#inputString").html("<br>");
-    }
-
-    if (nextSymbolIndex < inputString.length) {
-        colorDiv("inputString", [[nextSymbolIndex, nextSymbolIndex + 1]], "nextSymbol");
-    }
-}
-
-function resetAutomaton() {
-    currentStates = noam.fsm.computeEpsilonClosure(automaton, [automaton.initialState]);
-    inputString = $("#inputString").text();
-    nextSymbolIndex = 0;
-    colorize();
-    colorNextSymbol();
-}
-
-$("#inputFirst").click(function () {
-    resetAutomaton();
-});
-
-$("#inputPrevious").click(function () {
-    if (nextSymbolIndex > 0) {
-        currentStates = noam.fsm.readString(automaton, inputString.substring(0, nextSymbolIndex - 1).split(""));
-        nextSymbolIndex = nextSymbolIndex - 1;
-        colorize();
-        colorNextSymbol();
-    }
-});
-
-$("#inputNext").click(function () {
-    if (nextSymbolIndex < inputString.length) {
-        currentStates = noam.fsm.makeTransition(automaton, currentStates, inputString[nextSymbolIndex]);
-        nextSymbolIndex += 1;
-        colorize();
-        colorNextSymbol();
-    }
-});
-
-$("#inputLast").click(function () {
-    while (nextSymbolIndex < inputString.length) {
-        currentStates = noam.fsm.makeTransition(automaton, currentStates, inputString[nextSymbolIndex]);
-        nextSymbolIndex += 1;
-        colorize();
-        colorNextSymbol();
-    }
-});
 
 function initialize() {
-    inputStringLeft = null;
-    currentStates = null;
-    inactiveStates = null;
-    previousStates = null;
-    nextStates = null;
+    //prevent default submit behavior
+    $("#create_Form").submit(function (e) {
+        e.preventDefault();
+    }
+    );
 }
 
+initialize();
 var regex = null;
 var automaton = null;
-var inputString = null;
-var nextSymbolIndex = 0;
-var currentStates = null;
-var inactiveStates = null;
-var previousStates = null;
-var nextStates = null;
 var inputIsRegex = true;
-
-$("#regexinput").click(function () {
-    inputIsRegex = true;
-});
-
-$("#fsminput").click(function () {
-    inputIsRegex = false;
-});
 
 $("#generateRegex").click(function () {
     regex = noam.re.string.random(5, "abcd", {});
@@ -279,131 +84,41 @@ $("#generateRegex").click(function () {
     onRegexOrAutomatonChange();
 });
 
-function generateAutomaton(fsmType) {
-    automaton = noam.fsm.createRandomFsm(fsmType, 4, 3, 3);
-    $("#fsm").val(noam.fsm.serializeFsmToString(automaton));
-    $("#fsm").scrollTop(0);
-    $("#fsm").focus();
-    //console.log(automaton);
-    //console.log(noam.fsm.serializeFsmToString(automaton));
-    onRegexOrAutomatonChange();
-}
-
-$("#generateDFA").click(function () {
-    generateAutomaton(noam.fsm.dfaType);
-});
-
-$("#generateNFA").click(function () {
-    generateAutomaton(noam.fsm.dfaType);
-    //generateAutomaton(noam.fsm.nfaType);
-});
-
-$("#generateENFA").click(function () {
-    // generateAutomaton(noam.fsm.enfaType);
-    generateAutomaton(noam.fsm.dfaType);
-});
-
 $("#createAutomaton").click(function () {
-    if (inputIsRegex) {
-        regex = $("#regex").val();
-        automatonType = $("#automatonType").val();
-        automaton = noam.re.string.toAutomaton(regex);
-        automaton = noam.fsm.convertEnfaToNfa(automaton);
-        automaton = noam.fsm.convertNfaToDfa(automaton);
-        automaton = noam.fsm.minimize(automaton);
-        automaton = noam.fsm.convertStatesToNumbers(automaton);
-        // console.log(noam.fsm.convertStatesToNumbers(automaton));
-
-        // console.log(automaton);
-        // console.log(noam.fsm.serializeFsmToString(automaton));
-        //fade modal
-        $("#modal-crear-regex").modal("hide");
-    } else {
-        automaton = noam.fsm.parseFsmFromString($("#fsm").val());
-    }
-
-    initialize();
+    regex = $("#regex").val();
+    automaton = noam.re.string.toAutomaton(regex);
+    automaton = noam.fsm.convertEnfaToNfa(automaton);
+    automaton = noam.fsm.convertNfaToDfa(automaton);
+    automaton = noam.fsm.minimize(automaton);
+    automaton = noam.fsm.convertStatesToNumbers(automaton);
+    $("#modal-crear-regex").modal("hide");
     drawGraph();
-    resetAutomaton();
-
-    $("#generateRandomString").attr("disabled", false);
-    $("#generateRandomAcceptableString").attr("disabled", false);
-    $("#generateRandomUnacceptableString").attr("disabled", false);
-    $("#inputString").attr("disabled", false);
 });
 
 $("#regex").change(onRegexOrAutomatonChange);
 $("#regex").keyup(onRegexOrAutomatonChange);
-$("#fsm").change(onRegexOrAutomatonChange);
-$("#fsm").keyup(onRegexOrAutomatonChange);
 
 function onRegexOrAutomatonChange() {
-    $("#automatonGraph").html("");
-    $("#inputString").html("<br>");
-
-    $("#generateRandomString").attr("disabled", true);
-    $("#generateRandomAcceptableString").attr("disabled", true);
-    $("#generateRandomUnacceptableString").attr("disabled", true);
     $("#createAutomaton").attr("disabled", true);
-    $("#startStop").attr("disabled", true);
-    $("#inputFirst").attr("disabled", true);
-    $("#inputNext").attr("disabled", true);
-    $("#inputPrevious").attr("disabled", true);
-    $("#inputLast").attr("disabled", true);
-    $("#inputString").parent().html('<input id="inputString" type="text" class="input-block-level monospaceRegex" placeholder="See if this fits" disabled>');
-    $("#inputString").parent().removeClass("success error");
-    $("#inputString").keyup(onInputStringChange);
-    $("#inputString").change(onInputStringChange);
-    $("#startStop").text("Start");
-    $("#inputError").hide();
-
-    if (inputIsRegex) {
-        validateRegex();
-    } else {
-        validateFsm();
-    }
-}
-
-function validateFsm() {
-    var fsm = $("#fsm").val();
-
-    if (fsm.length === 0) {
-        $("#fsm").parent().removeClass("success error");
-        $("#fsmError").hide();
-    } else {
-        try {
-            noam.fsm.parseFsmFromString(fsm);
-            $("#fsm").parent().removeClass("error");
-            $("#fsm").parent().addClass("success");
-            $("#createAutomaton").attr("disabled", false);
-            $("#fsmError").hide();
-        } catch (e) {
-            $("#fsm").parent().removeClass("success");
-            $("#fsm").parent().addClass("error");
-            $("#fsmError").text("Error: " + e.message);
-            $("#fsmError").show();
-        }
-    }
+    $("#create_Form").removeClass("needs-validation");
+    $("#create_Form").addClass("was-validated");
+    validateRegex();
 }
 
 function validateRegex() {
     var regex = $("#regex").val();
 
     if (regex.length === 0) {
-        $("#regex").parent().removeClass("success error");
-        $("#fsmError").hide();
+        //remove was validated, add needs validation
+        $("#create_Form").removeClass("was-validated");
+        $("#create_Form").addClass("needs-validation");
     } else {
         try {
             noam.re.string.toTree(regex);
-            $("#regex").parent().removeClass("error");
-            $("#regex").parent().addClass("success");
             $("#createAutomaton").attr("disabled", false);
-            $("#fsmError").hide();
+            $("#regex").get(0).setCustomValidity("");
         } catch (e) {
-            $("#regex").parent().removeClass("success");
-            $("#regex").parent().addClass("error");
-            $("#fsmError").text("Error: " + e.message);
-            $("#fsmError").show();
+            $("#regex").get(0).setCustomValidity("invalid");
         }
     }
 }
