@@ -50,7 +50,6 @@ function draw() {
                 textarea.setSelectionRange(pos, pos);
             }
         }
-        console.log(err.toString());
     }
 }
 
@@ -71,7 +70,6 @@ $("#createAutomaton2").click(function () {
     automaton = noam.fsm.convertStatesToNumbers(automaton);
     var automatonDot = noam.fsm.printDotFormat(automaton);
     var automatonDotLines = automatonDot.split("\n");
-    console.log(automatonDotLines);
     var automatonDotLinesNew = [];
     var numberOfStates=0;
     var numberOfValidStates=0;
@@ -83,7 +81,6 @@ $("#createAutomaton2").click(function () {
             var line = automatonDotLines[i].split("]");
             var lineNew = line[0] + "] " + line[1].replace(/\d+/g, function (match) {
                 numberOfValidStates++;
-                console.log(match);
                 if(match==0 || match=='0'){startIsEnd=true; return ""}else
                 return "E" + match;
             }).replace(/\s+/g, " ");
@@ -112,7 +109,6 @@ $("#createAutomaton2").click(function () {
         }
     }
     automatonDot = automatonDotLinesNew.join("\n");
-    console.log(automatonDot);
     $("#modal-crear-regex2").modal("hide");
     var container = document.getElementById("automata-network");
     var options = {
@@ -129,7 +125,6 @@ $("#createAutomaton2").click(function () {
         data = vis.parseDOTNetwork(automatonDot);
         network.setData(data);
     } catch (err) {
-        console.log(err);
     }
     network = new vis.Network(container, data, options);
     $(window).load(draw);
@@ -266,7 +261,6 @@ $("#createAutomaton").click(function () {
     automaton = noam.fsm.convertNfaToDfa(automaton);
     automaton = noam.fsm.minimize(automaton);
     automaton = noam.fsm.convertStatesToNumbers(automaton);
-    console.log(noam.fsm.printDotFormat(automaton));
     $("#modal-crear-regex").modal("hide");
     drawGraph();
     //display info1 and info2
