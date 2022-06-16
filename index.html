@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="es-419">
-
+<!-- HEADER: Se incluye toda la información de la página, además se importan
+los estilos y el favicon. Las librerías son importadas usando las rutas relativas (para las locales)
+y enlaces de CDN o unPKG (Cloud Network Delivery) -->
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -25,10 +27,12 @@
     <link rel="mask-icon" href="images/safari-pinned-tab.svg" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
+    <!-- Viz Network -->
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
 </head>
-
 <body class="bg-custom">
-    <!-- NAVBAR -->
+    <!-- NAVBAR: Es la barra de navegación de nuestro sitio, en este punto no se requiere más que la página principal.
+    Una vez generada la documentación, será añadida en un enlace -->
     <nav class="navbar navbar-expand-md navbar-dark nav-custom">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler"
@@ -51,7 +55,8 @@
             </div>
         </div>
     </nav>
-    <!-- PANEL DE CONTROL -->
+    <!-- PANEL DE CONTROL: Contiene los botones para controlar la aplicación y además muestra información
+    sobre el autómata generado -->
     <div class="container">
         <div class="row py-3">
             <div class="col-md-4 col-12 my-1">
@@ -59,9 +64,9 @@
                     <div class="card-body">Generar autómata</div>
                     <div class="d-flex align-items-center justify-content-center">
                         <button type="button" class="btn btn-p-azul" id="btn-regex" data-bs-toggle="modal"
-                            data-bs-target="#modal-crear-regex">RegEx</button>
-                        <button type="button" class="ms-3 btn btn-p-azul" id="btn-data" data-bs-toggle="modal"
-                            data-bs-target="#modal-crear-data">Datos</button>
+                            data-bs-target="#modal-crear-regex" data-bs-toggle="tooltip" data-bs-placement="top" title="Crea un diagrama que puede ser exportando en PNG">Persistente</button>
+                        <button type="button" class="ms-md-1 ms-lg-4 ms-4 btn btn-p-azul" id="btn-data" data-bs-toggle="modal"
+                            data-bs-target="#modal-crear-regex2" data-bs-toggle="tooltip" data-bs-placement="top" title="Crea un autómata interactivo">Interactivo</button>
                     </div>
                 </div>
             </div>
@@ -89,50 +94,59 @@
             </div>
         </div>
     </div>
-
-    <!-- PANEL AUTÓMATA -->
+    <!-- PANEL AUTÓMATA: En este panel se grafican los autómatas, sea cual sea el método empleado.
+    Consta de varios sub paneles ocultos que se activan dependiendo del método utilizado -->
     <div class="container align-items-center text-center justify-content-center fg-custom py-3" id="automata_body">
         <p class="fs-4 text-white d-none" id="regex-show">REGEX: </p>
+        <div class="d-none" style="height: 400px;" id="automata-network"></div>
+        <div class="vis-network" tabindex="0" id="network"
+            style="position: relative; overflow: hidden; touch-action: pan-y; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); width: 100%;">
+            <canvas width="0"
+                style="position: relative; touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); width: 100%; height: 100%;"
+                height="0"></canvas>
+        </div>
+        
         <div id="automatonGraph" class="svg-container">
             <p class="text-muted p-5">
                 Haz click en alguno de los botones de arriba para generar un autómata. <br>
-                Se requiere una expresión regular váilda[1]. En esta versión, el operador de decisión es "+" y el
-                operador de Kleene es "*".
+                Se requiere una expresión regular váilda[1]. En esta versión, el operador de decisión puede ser introducido como "+" o "|" y el
+                operador de Kleene como "*".
                 <br><br>
                 <small class="fst-italic d-inline">[1]Las expresiones regulares utilizadas en este generador pueden
                     variar respecto a otros, en este se utiliza la sintaxis de expresiones regulares establecida
                     en el libro <e class="fw-bold">"Introducción a la teoría de autómatas lenguajes y computación"</e>
                     de John Hopcroft, Rajeev Motwani y Jeffrey D. Ullman.</small>
-
             </p>
 
         </div>
         <button class="btn btn-s-close d-none mt-5" type="button" id="downloadPNG">Descargar imagen</button>
+        <small class="text-warning d-none" id="info1">• Estado inicial &nbsp;&nbsp;&nbsp;&nbsp;</small><small class="d-none" id="info2" style="color: #68cc83;"> • Estado(s) de aceptación</small>
     </div>
-    <!-- PANEL TABLA -->
+    <!-- PANEL TABLA: En este panel se muestra exclusivamente la tabla de estados del autómata graficado -->
     <div class="container align-items-center text-center justify-content-center fg-custom my-4 py-3">
         <div id="automatonTable">
 
         </div>
 
     </div>
-    <!-- FORMULARIO REGEX -->
+    <!-- FORMULARIO REGEX: Formulario 1, utilizado para graficar el autómata de forma "normal" -->
     <div class="modal fade" id="modal-crear-regex" tabindex="-1" role="dialog" aria-labelledby="modal-crear-regexLabel"
         aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content fg-custom">
                 <div class="modal-header">
-                    <h3 class="modal-title" id="modal-crear-regexLabel">Generar Autómata</h3>
+                    <h3 class="modal-title" id="modal-crear-regexLabel">Generar AFD (diagrama)</h3>
                     <button type="button" class="btn btn-s-close" data-bs-dismiss="modal" aria-label="close">
                         <i class="bi bi-x-lg"></i>
                     </button>
                 </div>
                 <form id="create_Form" class="needs-validation" novalidate>
                     <div class="modal-body">
-                        <div class="mb-2 position-relative">
+                        <div class="mb-2 position-relative d-flex">
                             <label for="regex">Expresión Regular</label>
                             <input type="text" class="form-control input-custom" id="regex"
                                 placeholder="Introduce una expresión regular sin comillas" required>
+                            <button class="btn btn-s-close" id="rand1"><i class="bi bi-dice-5"></i></button>    
                             <div class="invalid-tooltip" id="input-regex-invalid">
                                 La expresión regular no es válida, consulta la documentación.
                             </div>
@@ -147,93 +161,45 @@
             </div>
         </div>
     </div>
-    <!-- FORMULARIO DATOS -->
-    <div class="modal fade" id="modal-crear-data" tabindex="-1" role="dialog" aria-labelledby="modal-crear-dataLabel"
+    <!-- FORMULARIO REGEX 2: Segundo formulario, utilizado para graficar el autómata en forma de red -->
+    <div class="modal fade" id="modal-crear-regex2" tabindex="-1" role="dialog" aria-labelledby="modal-crear-regexLabel"
         aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content fg-custom">
                 <div class="modal-header">
-                    <h3 class="modal-title" id="modal-crear-dataLabel">Registrar nuevo producto</h3>
+                    <h3 class="modal-title" id="modal-crear-regexLabel2">Generar AFD (red de nodos)</h3>
                     <button type="button" class="btn btn-s-close" data-bs-dismiss="modal" aria-label="close">
                         <i class="bi bi-x-lg"></i>
                     </button>
                 </div>
-                <form id="create_Form" class="needs-validation" novalidate>
+                <form id="create_Form2" class="needs-validation" novalidate>
                     <div class="modal-body">
-                        <div class="mb-2 position-relative">
-                            <label for="create_input_pcompra">Campo 1</label>
-                            <input type="number" class="form-control input-custom disabled" id="create_input_pcompra"
-                                placeholder="Campo 1 placeholder" min="0" max="1000000" step="0.01" required>
-                            <div class="invalid-tooltip" id="pcompra_invalid">
-                                Introduce un valor (positivo, con o sin decimales).
-                            </div>
-                        </div>
-                        <div class="mb-2 position-relative">
-                            <label for="create_input_pventa">Campo 2</label>
-                            <input type="number" class="form-control input-custom disabled" id="create_input_pventa"
-                                min="0" max="1000000" step="0.01" placeholder="Campo 2 placeholder" required>
-                            <div class="invalid-tooltip" id="pventa_invalid">
-                                Introduce un valor (positivo, con o sin decimales).
-                            </div>
-                        </div>
-                        <div class="mb-2 position-relative">
-                            <label for="create_input_stock">Campo 3</label>
-                            <input type="number" class="form-control input-custom disabled" id="create_input_stock"
-                                min="0" step="1" max="999999" placeholder="Campo 3 placeholder" required>
-                            <div class="invalid-tooltip" id="stock_invalid">
-                                Debe ser un número entero mayor o igual a cero.
-                            </div>
-                        </div>
-                        <div class="mb-2 position-relative">
-                            <label for="create_input_talla">Campo 4</label>
-                            <input type="number" class="form-control input-custom disabled" id="create_input_talla"
-                                placeholder="Campo 4 placeholder" min="1" max="100" step="0.5" required>
-                            <div class="invalid-tooltip" id="talla_invalid">
-                                Introduce un valor (positivo, con o sin decimales).
-                            </div>
-                        </div>
-                        <div class="mb-2 position-relative">
-                            <label for="create_input_color">Campo 5</label>
-                            <input type="text" class="form-control input-custom disabled" id="create_input_color"
-                                placeholder="Campo 5 placeholder" maxlength="20" required>
-                            <div class="invalid-tooltip">
-                                Color o colores del producto.
-                            </div>
-                        </div>
-                        <div class="mb-2 position-relative">
-                            <label for="create_input_marca">Campo 6</label>
-                            <input type="text" class="form-control input-custom disabled" id="create_input_marca"
-                                placeholder="Campo 6 placeholder" maxlength="20" required>
-                            <div class="invalid-tooltip">
-                                Marca del producto.
-                            </div>
-                        </div>
-                        <div class="position-relative">
-                            <label for="create_input_modelo">Campo 7</label>
-                            <input type="text" class="form-control input-custom disabled" id="create_input_modelo"
-                                placeholder="Campo 7 placeholder" maxlength="20" required>
-                            <div class="invalid-tooltip">
-                                Modelo del producto.
+                        <div class="mb-2 position-relative d-flex">
+                            <label for="regex2">Expresión Regular</label>
+                            <input type="text" class="form-control input-custom" id="regex2"
+                                placeholder="Introduce una expresión regular sin comillas" required>
+                                <button class="btn btn-s-close" id="rand2"><i class="bi bi-dice-5"></i></button>
+                            <div class="invalid-tooltip" id="input-regex-invalid">
+                                La expresión regular no es válida, consulta la documentación.
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <small class="text-warning d-none" id="advertencia">Precaución: El precio de venta es menor al
-                            precio de compra.</small>
-                        <button type="submit" id="create_ok" class="btn btn-s-verde">Guardar</button>
-                        <button type="button" id="create_cancel" class="btn btn-s-amarillo"
+                        <button type="submit" id="createAutomaton2" class="btn btn-s-verde">Generar</button>
+                        <button type="button" id="crear-cancel" class="btn btn-s-amarillo"
                             data-bs-dismiss="modal">Cancelar</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+    <!-- SECCIÓN OCULTA PARA IMPRIMIR: Esta sección está oculta en todo momento, únicamente almacena la copia del
+    autómata en resolución Full HD -->
     <div class="container-fluid d-none" id="printingZone">
         <div id="automatonPrint">
         </div>
     </div>
-    <!-- FOOTER -->
-
+    <!-- Scripts: Aquí se incluyen nuestros scripts locales, utilizando las rutas relativas a ellos -->
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/viz.js"></script>

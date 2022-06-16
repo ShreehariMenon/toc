@@ -64,35 +64,6 @@ h3 {
     text-rendering: auto;
 }
 
-/*
-.currentState {
-    fill: rgba(255, 0, 38, 0.11);
-    background-color: rgba(255, 0, 38, 0.151);
-    stroke-width: 2;
-}
-
-.nextState {
-    fill: rgba(0, 255, 0, 0.37);
-}
-
-.previousState {
-    fill: lightblue;
-}
-
-.activeTransition {
-    stroke: blue;
-    stroke-width: 2;
-}
-
-.inactiveState {
-    fill: white;
-}
-
-.nextSymbol {
-    background-color: lightgreen;
-    font-weight:bold;
-}
-*/
 #fsm {
     height: 600px;
 }
