@@ -15,6 +15,11 @@ FSM Generator was developed using pure JavaScript and HTML, with the following l
 - [Viz](https://github.com/mdaines/viz.js/): a JavaScript library for rendering Graphviz graphs.
 - [Noam](https://github.com/izuzak/noam): a JavaScript library for working with formal languages, grammars, and automata.
 
+## Getting Started
+
+To run the app, simply visit the following link: https://ralo-dev.github.io/FSM-Generator/
+
+
 ## License
 
 This project is licensed under the GNU General Public License v3.0. See the [LICENSE](https://github.com/ralo-dev/FSM-Generator/blob/main/LICENSE) file for details.
