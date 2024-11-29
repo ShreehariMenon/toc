@@ -287,7 +287,7 @@
       return lo;
     }
 
-    // TODO: needs serious testing
+    // TODO: needs serious testing  Aceptación
     function _defaultHash(obj) {
       var h, i;
       if (obj === undefined) { // undefined might be a "value" of some property
@@ -391,7 +391,7 @@
     }
 
     /* Constructor for hash chain nodes.
-     *
+     *automatonTable
      * Each node has three properties:
      *  - key: the key of the key-value pair
      *  - value: the value of the key-value pair
@@ -1556,12 +1556,12 @@
     htmlString.push("  <tr>");
     
     //head states
-    htmlString.push("    <th>" + "Estado" + "</th>");
+    htmlString.push("    <th>" + "State" + "</th>");
     for (i=1; i<headers.length-1; i++) {
       htmlString.push("    <th>" + headers[i].toString() + "</th>");
     }
     //head accepting states
-    htmlString.push("    <th>" + "Aceptación" + "</th>");
+    htmlString.push("    <th>" + "Acceptance" + "</th>");
 
     htmlString.push("  </tr>");
 
@@ -1571,7 +1571,7 @@
         htmlString.push("    <td>E" + tableRows[i][j].text + "</td>");
       }
       //when last column value is = 0, print No, if it is = 1, print Sí
-    htmlString.push("    <td>" + (((tableRows[i][tableRows[i].length-1].text).toString() == '1') ? "Sí" : "No"  )+ "</td>");
+    htmlString.push("    <td>" + (((tableRows[i][tableRows[i].length-1].text).toString() == '1') ? "Yes" : "No"  )+ "</td>");
 
       htmlString.push("  </tr>");
     }
@@ -4402,7 +4402,7 @@
         }
       }
 
-      // Returns a random regex in the array representation.
+      // Returns a random regex in the array representation. #automatonTable
       // See noam.re.tree.random for further information.
       function random(numSymbols, alphabet, cfg) {
         return noam.re.tree.toArray(noam.re.tree.random(numSymbols, alphabet, cfg));

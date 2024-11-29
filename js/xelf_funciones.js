@@ -176,13 +176,13 @@ Estas funciones muestra el elemento regex-show, que contiene la expresión regul
 function showRegex() {
     var regex = $("#regex").val();
     var regexNew = regex.replace(/\+/g, "|");
-    $("#regex-show").text("Expresión regular" + ": " + regexNew);
+    $("#regex-show").text("Expression regular" + ": " + regexNew);
     $("#regex-show").removeClass("d-none");
 }
 function showRegex2() {
     var regex = $("#regex2").val();
     var regexNew = regex.replace(/\+/g, "|");
-    $("#regex-show").text("Expresión regular" + ": " + regexNew);
+    $("#regex-show").text("Expression regular" + ": " + regexNew);
     $("#regex-show").removeClass("d-none");
 }
 function showTable(){
@@ -282,7 +282,7 @@ function onRegexOrAutomatonChange() {
     validateRegex();
 }
 
-/*
+/* automatonTable
 Función que se encarga de validar la expresión regular.
 Si la expresión regular es válida, se habilita el botón de crear automata.
 Si la expresión regular no es válida, se deshabilita el botón de crear automata y se muestra

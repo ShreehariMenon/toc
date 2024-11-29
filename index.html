@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es-419">
+<html lang="en">
 <!-- HEADER: Se incluye toda la información de la página, además se importan
 los estilos y el favicon. Las librerías son importadas usando las rutas relativas (para las locales)
 y enlaces de CDN o unPKG (Cloud Network Delivery) -->
@@ -44,9 +44,7 @@ y enlaces de CDN o unPKG (Cloud Network Delivery) -->
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="">Generate</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="https://github.com/ralo-dev/FSM-Generator"><i class="bi bi-github"></i>GitHub</a>
-                    </li>
+                    
                 </ul>
             </div>
         </div>
@@ -60,9 +58,11 @@ y enlaces de CDN o unPKG (Cloud Network Delivery) -->
                     <div class="card-body">Generate</div>
                     <div class="d-flex align-items-center justify-content-center">
                         <button type="button" class="btn btn-p-azul" id="btn-regex" data-bs-toggle="modal"
-                            data-bs-target="#modal-crear-regex" data-bs-toggle="tooltip" data-bs-placement="top" title="Crea un diagrama que puede ser exportando en PNG">Static</button>
+                            data-bs-target="#modal-crear-regex" data-bs-toggle="tooltip" data-bs-placement="top" title="
+                            Create a diagram that can be exported in PNG">Static</button>
                         <button type="button" class="ms-md-1 ms-lg-4 ms-4 btn btn-p-azul" id="btn-data" data-bs-toggle="modal"
-                            data-bs-target="#modal-crear-regex2" data-bs-toggle="tooltip" data-bs-placement="top" title="Crea un autómata interactivo">Interactive</button>
+                            data-bs-target="#modal-crear-regex2" data-bs-toggle="tooltip" data-bs-placement="top" title="
+                            Create an interactive automaton">Interactive</button>
                     </div>
                 </div>
             </div>
@@ -110,16 +110,7 @@ y enlaces de CDN o unPKG (Cloud Network Delivery) -->
                 <small class="fst-italic d-inline">[1]The regular expressions used in this generator may vary from others, the regular expression used here is based upon the syntax established in the book <e class="fw-bold">"Introduction to Automata Theory, Languages, and Computation"</e>
                     by John Hopcroft, Rajeev Motwani, and Jeffrey D. Ullman is used.</small>
             </p>
-            <p class="text-muted p-5">
-                Haz click en alguno de los botones de arriba para generar un autómata. <br>
-                Se requiere una expresión regular váilda[1]. En esta versión, el operador de decisión puede ser introducido como "+" o "|" y el
-                operador de Kleene como "*".
-                <br><br>
-                <small class="fst-italic d-inline">[1]Las expresiones regulares utilizadas en este generador pueden
-                    variar respecto a otros, en este se utiliza la sintaxis de expresiones regulares establecida
-                    en el libro <e class="fw-bold">"Introducción a la teoría de autómatas lenguajes y computación"</e>
-                    de John Hopcroft, Rajeev Motwani y Jeffrey D. Ullman.</small>
-            </p>
+            
 
         </div>
         <button class="btn btn-s-close d-none mt-5" type="button" id="downloadPNG">Download as PNG</button>
@@ -132,7 +123,7 @@ y enlaces de CDN o unPKG (Cloud Network Delivery) -->
         </div>
 
     </div>
-    <!-- FORMULARIO REGEX: Formulario 1, utilizado para graficar el autómata de forma "normal" -->
+    <!-- FORMULARIO  PANEL TABLAREGEX: Formulario 1, utilizado para graficar el autómata de forma "normal" -->
     <div class="modal fade" id="modal-crear-regex" tabindex="-1" role="dialog" aria-labelledby="modal-crear-regexLabel"
         aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -148,7 +139,7 @@ y enlaces de CDN o unPKG (Cloud Network Delivery) -->
                         <div class="mb-2 position-relative d-flex">
                             <label for="regex">Regular Expression</label>
                             <input type="text" class="form-control input-custom" id="regex"
-                                placeholder="Introduce una expresión regular sin comillas" required>
+                                placeholder="Enter a regular expression" required>
                             <button class="btn btn-s-close" id="rand1"><i class="bi bi-dice-5"></i></button>    
                             <div class="invalid-tooltip" id="input-regex-invalid">
                                 The regular expression is not valid.
@@ -180,7 +171,7 @@ y enlaces de CDN o unPKG (Cloud Network Delivery) -->
                         <div class="mb-2 position-relative d-flex">
                             <label for="regex2">Regular Expression</label>
                             <input type="text" class="form-control input-custom" id="regex2"
-                                placeholder="Introduce una expresión regular sin comillas" required>
+                                placeholder="Enter a regular expression" required>
                                 <button class="btn btn-s-close" id="rand2"><i class="bi bi-dice-5"></i></button>
                             <div class="invalid-tooltip" id="input-regex-invalid">
                                 The regular expression is not valid.
@@ -197,7 +188,7 @@ y enlaces de CDN o unPKG (Cloud Network Delivery) -->
         </div>
     </div>
     <!-- SECCIÓN OCULTA PARA IMPRIMIR: Esta sección está oculta en todo momento, únicamente almacena la copia del
-    autómata en resolución Full HD -->
+    autómata en resolución Full HD   Aceptación-->
     <div class="container-fluid d-none" id="printingZone">
         <div id="automatonPrint">
         </div>
@@ -210,4 +201,4 @@ y enlaces de CDN o unPKG (Cloud Network Delivery) -->
     <script src="js/xelf_funciones.js"></script>
 </body>
 
-</html>
+</html> 
